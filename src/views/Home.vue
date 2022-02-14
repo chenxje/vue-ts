@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
+    <charts type="bar" :option="option"/>
 </template>
-
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-
-@Options({
-  components: {
-    HelloWorld,
-  },
+import { defineComponent } from 'vue'
+import Charts from '@/components/echarts/charts.vue'
+export default defineComponent({
+    components: { Charts },
+    setup() {
+        let option = {
+            xAxis: {
+                data: ['4-3', '4-4', '4-5', '4-6', '4-7', '4-8', '4-9'],
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '用户量',
+                    type: 'line',
+                    data: [8, 15, 31, 13, 15, 22, 11],
+                },
+            ],
+        }
+        return {
+            option
+        }
+    }
 })
-export default class Home extends Vue {}
 </script>

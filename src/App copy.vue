@@ -1,6 +1,6 @@
 <template>
     <a-config-provider :locale="zhCN">
-        <div class="app">
+        <div id="app">
             <div class="te-head">
                 <div class="te-logout">
                     <a href="javascript:viod(0);" class="iconfont icon-log-out"></a>
@@ -9,9 +9,12 @@
             <div class="te-body">
                 <a-menu
                     style="width: 256px"
-                    v-model:selectedKeys="selectedKeys"
-                    v-model:openKeys="openKeys"
+                    :default-selected-keys="[current]"
+                    :default-open-keys="openKeys"
                     mode="inline"
+                    :theme="theme"
+                    :selected-keys="[current]"
+                    @click="handleClick"
                 >
                     <template v-for="menu in menus">
                         <a-sub-menu :key="menu.path" v-if="menu.children?.length > 0">
@@ -22,7 +25,6 @@
                                 </span>
                             </template>
                             <a-menu-item v-for="child in menu.children" :key="child.path">
-                                <icon :icon="child.meta.icon" />
                                 {{ child.meta.cn_name }}
                                 <router-link :to="menu.path + '/' + child.path" />
                             </a-menu-item>
@@ -36,50 +38,53 @@
                         </a-menu-item>
                     </template>
                 </a-menu>
-                <router-view></router-view>
+                <router-view> </router-view>
             </div>
         </div>
-    </a-config-provider>>
+    </a-config-provider>
 </template>
-<script lang="ts">
+<script>
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@/components/icon'
+
 export default defineComponent({
     components: {
         Icon
     },
     setup() {
-        const ls = window.location.href.split('/')
-        const current = '/' + ls[ls.length - 1]
-        console.log(useRouter().getRoutes())
+        const theme = 'light'
+        let current = ref()
+        const handleClick = e => {
+            current = ref(e.key)
+        }
         const menus = Array.from(useRouter().getRoutes()).filter(router => {
-            return router.meta?.cn_name && !router.meta?.children
+            return router.meta?.cn_name
         })
-        const openKeys: string[] = []
+        const ls = window.location.href.split('/')
+        current = '/' + ls[ls.length - 1]
+        const openKeys = []
         menus.forEach(menu => {
             menu.children?.forEach(item => {
-                if(item.path == current){
+                if(item.path == current.value){
                     openKeys.push(menu.path)
                 }
             })
         })
-        console.log(menus)
-        const state = reactive({
-            openKeys,
-            selectedKeys: [current],
-        })
         return {
             zhCN,
+            theme,
+            current,
+            openKeys,
             menus,
-            ...toRefs(state),
+            handleClick,
         }
     },
 })
 </script>
 <style lang="less">
-.app {
+#app {
     height: 100%;
     font-size: 16px;
     background-color: #eee;
