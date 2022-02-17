@@ -113,6 +113,10 @@ module.exports = {
                 pathRewrite: {
                     '^/api': ''
                 }
+            },
+            '/cityjson': {
+                target: 'http://pv.sohu.com/cityjson',
+                changeOrigin: true,
             }
         }
     }
