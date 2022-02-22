@@ -1,18 +1,21 @@
 <template>
     <div class="about">
-        <h1>This is an about page</h1>
+        <date-time></date-time>
     </div>
 </template>
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-import { api } from '@/utils/api'
+import { defineComponent } from 'vue'
+import DateTime from '@/components/public/DateTime.vue'
 export default defineComponent({
-    setup(){
-        onMounted(() => {
-            api.about.currentCity().then(res => {
-                console.log(res)
-            })
-        })
-    }
+    components: {
+        DateTime
+    },
 })
 </script>
+<style lang="less" scoped>
+.about{
+    height: calc(100% - 20px);
+    background: #fff;
+    margin: 10px;
+}
+</style>

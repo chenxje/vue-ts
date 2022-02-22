@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
-const routes = [
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
         name: "Home",
@@ -18,6 +18,16 @@ const routes = [
             icon: 'MoreOutlined'
         },
         children: [
+            {
+                path: '/demo-form',
+                name: 'demoForm',
+                meta: {
+                    cn_name: '演示Antd表单',
+                    icon: 'FormOutlined',
+                    children: true
+                },
+                component: () => import("@/views/modelPage/DemoForm.vue") 
+            },
             {
                 path: '/turn-table',
                 name: 'turnTable',
@@ -53,7 +63,7 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
-    routes,
-});
+    routes
+})
 
-export default router;
+export default router

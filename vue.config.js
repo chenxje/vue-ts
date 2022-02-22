@@ -35,23 +35,6 @@ module.exports = {
                 }
             }
         })
-        // config.module
-        //     .rule('less')
-        //     .test(/\.(css|less)$/)
-        //     .use('less-loader')
-        //     .loader('less-loader')
-        //     .options({
-        //         lessOptions: {
-        //             javascriptEnabled: true
-        //         }
-        //     })
-        //     .end()
-        //     .use('css-loader')
-        //     .loader('css-loader')
-        //     .end()
-        //     .use('style-loader')
-        //     .loader('style-loader')
-        //     .end()
 
         if (isProd) {
             config.plugin('compressionPlugin')
@@ -64,6 +47,9 @@ module.exports = {
                     deleteOriginalAssets: false
                 }));
         }
+
+        // 开启HMR热更新
+        config.resolve.symlinks(true);
 
         //向index.html传递参数
         config.plugin('html').tap(args=>{

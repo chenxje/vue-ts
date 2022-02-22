@@ -2,8 +2,10 @@
     <a-config-provider :locale="zhCN">
         <div class="app">
             <div class="te-head">
+                <!-- <date-time></date-time> -->
+                <div class="te-city">{{cityInfo?.cname}}</div>
                 <div class="te-logout">
-                    <a href="javascript:viod(0);" class="iconfont icon-log-out"></a>
+                    <icon icon="LogoutOutlined"/>
                 </div>
             </div>
             <div class="te-body">
@@ -24,7 +26,7 @@
                             <a-menu-item v-for="child in menu.children" :key="child.path">
                                 <icon :icon="child.meta.icon" />
                                 {{ child.meta.cn_name }}
-                                <router-link :to="menu.path + '/' + child.path" />
+                                <router-link :to="child.path" />
                             </a-menu-item>
                         </a-sub-menu>
                         <a-menu-item :key="menu.path" v-else>
@@ -39,13 +41,14 @@
                 <router-view></router-view>
             </div>
         </div>
-    </a-config-provider>>
+    </a-config-provider>
 </template>
 <script lang="ts">
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@/components/icon'
+import { api } from '@/utils/api'
 export default defineComponent({
     components: {
         Icon
@@ -53,7 +56,6 @@ export default defineComponent({
     setup() {
         const ls = window.location.href.split('/')
         const current = '/' + ls[ls.length - 1]
-        console.log(useRouter().getRoutes())
         const menus = Array.from(useRouter().getRoutes()).filter(router => {
             return router.meta?.cn_name && !router.meta?.children
         })
@@ -65,14 +67,20 @@ export default defineComponent({
                 }
             })
         })
-        console.log(menus)
         const state = reactive({
             openKeys,
             selectedKeys: [current],
         })
+        let cityInfo = ref()
+        api.about.currentCity().then((res: any) => {
+            const str = res.match(/\{.*?\}/);
+            cityInfo.value = JSON.parse(str[0])
+            
+        })
         return {
             zhCN,
             menus,
+            cityInfo,
             ...toRefs(state),
         }
     },
@@ -89,8 +97,14 @@ export default defineComponent({
         line-height: 60px;
         width: 100%;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: flex-end;
+        .te-city{
+            margin-right: 20px;
+        }
         .te-logout {
             float: right;
+            margin-right: 20px;
             a {
                 line-height: 60px;
                 padding: 0 10px;

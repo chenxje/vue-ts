@@ -3,7 +3,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Charts from '@/components/echarts/charts.vue'
+import Charts from '@/components/public/charts.vue'
 export default defineComponent({
     components: { Charts },
     setup() {
