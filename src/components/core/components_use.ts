@@ -18,8 +18,8 @@ import {
     Calendar,
     Pagination,
     Popconfirm,
-    message,
-    notification,
+    // message,
+    // notification,
     // LocaleProvider,
     ConfigProvider,
     AutoComplete,
@@ -42,8 +42,8 @@ import {
     Transfer,
     Empty,
     // Alert,
-    // Tag,
-    // Divider,
+    Tag,
+    Divider,
     TimePicker,
     // Progress,
     // Skeleton,
@@ -71,7 +71,7 @@ const ant = {
         Vue.use(Calendar)
         Vue.use(Pagination)
         Vue.use(Popconfirm)
-        Vue.use(notification)
+        // Vue.use(notification)
         // Vue.use(LocaleProvider)
         Vue.use(ConfigProvider)
         Vue.use(AutoComplete)
@@ -94,24 +94,24 @@ const ant = {
         Vue.use(Transfer)
         Vue.use(Empty)
         // Vue.use(Alert)
-        // Vue.use(Tag)
-        // Vue.use(Divider)
+        Vue.use(Tag)
+        Vue.use(Divider)
         Vue.use(TimePicker)
         // Vue.use(Progress)
         // Vue.use(Skeleton)
 
-        message.config({
-            top: ``,
-            duration: 2,
-            maxCount: 3,
-        });
-        Vue.config.globalProperties.$confirm = Modal.confirm
-        Vue.config.globalProperties.$message = message
-        Vue.config.globalProperties.$notification = notification
-        Vue.config.globalProperties.$info = Modal.info
-        Vue.config.globalProperties.$success = Modal.success
-        Vue.config.globalProperties.$error = Modal.error
-        Vue.config.globalProperties.$warning = Modal.warning
+        // message.config({
+        //     top: ``,
+        //     duration: 2,
+        //     maxCount: 3,
+        // });
+        // Vue.config.globalProperties.$confirm = Modal.confirm
+        // Vue.config.globalProperties.$message = message
+        // Vue.config.globalProperties.$notification = notification
+        // Vue.config.globalProperties.$info = Modal.info
+        // Vue.config.globalProperties.$success = Modal.success
+        // Vue.config.globalProperties.$error = Modal.error
+        // Vue.config.globalProperties.$warning = Modal.warning
     }
 }
 

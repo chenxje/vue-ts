@@ -1,6 +1,6 @@
 <template>
     <a-config-provider :locale="zhCN">
-        <div class="app">
+        <div class="app h-100">
             <div class="te-head">
                 <!-- <date-time></date-time> -->
                 <div class="te-city">{{cityInfo?.cname}}</div>
@@ -19,21 +19,21 @@
                         <a-sub-menu :key="menu.path" v-if="menu.children?.length > 0">
                             <template #title>
                                 <span>
-                                    <icon :icon="menu.meta.icon" />
-                                    <span>{{ menu.meta.cn_name }}</span>
+                                    <!-- <icon :icon="menu.meta.icon" /> -->
+                                    <span>{{ menu.name }}</span>
                                 </span>
                             </template>
-                            <a-menu-item v-for="child in menu.children" :key="child.path">
-                                <icon :icon="child.meta.icon" />
-                                {{ child.meta.cn_name }}
-                                <router-link :to="child.path" />
+                            <a-menu-item v-for="child in menu.children" :key="menu.path + '/' + child.path">
+                                <!-- <icon :icon="child.meta.icon" /> -->
+                                {{ child.name }}
+                                <router-link :to="menu.path + '/' + child.path" />
                             </a-menu-item>
                         </a-sub-menu>
                         <a-menu-item :key="menu.path" v-else>
-                            <template #icon>
+                            <!-- <template #icon>
                                 <icon :icon="menu.meta.icon" />
-                            </template>
-                            <span>{{ menu.meta.cn_name }}</span>
+                            </template> -->
+                            <span>{{ menu.name }}</span>
                             <router-link :to="menu.path" />
                         </a-menu-item>
                     </template>
@@ -47,22 +47,19 @@
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import { Icon } from '@/components/icon'
 import { api } from '@/utils/api'
 export default defineComponent({
-    components: {
-        Icon
-    },
     setup() {
         const ls = window.location.href.split('/')
-        const current = '/' + ls[ls.length - 1]
+        let current = '/' + ls[ls.length - 1]
         const menus = Array.from(useRouter().getRoutes()).filter(router => {
-            return router.meta?.cn_name && !router.meta?.children
+            return !router.meta?.children && router.name && router.name != '404'
         })
         const openKeys: string[] = []
         menus.forEach(menu => {
             menu.children?.forEach(item => {
-                if(item.path == current){
+                if(current.indexOf(item.path) > -1){
+                    current = menu.path + current
                     openKeys.push(menu.path)
                 }
             })
@@ -75,7 +72,7 @@ export default defineComponent({
         api.about.currentCity().then((res: any) => {
             const str = res.match(/\{.*?\}/);
             cityInfo.value = JSON.parse(str[0])
-            
+
         })
         return {
             zhCN,
@@ -88,9 +85,6 @@ export default defineComponent({
 </script>
 <style lang="less">
 .app {
-    height: 100%;
-    font-size: 16px;
-    background-color: #eee;
     .te-head {
         background-color: #fff;
         height: 60px;

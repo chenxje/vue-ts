@@ -1,6 +1,5 @@
 // request.ts
 import axios from "./request";
-import qs from "qs";
 
 export class Request {
     /**
@@ -18,9 +17,9 @@ export class Request {
         })
     }
 
-    static post = (url: string, params?: any) => {
+    static post = (url: string, params?: any, contentType?: any) => {
         return new Promise((resolve, reject) => {
-            axios.post(url, qs.stringify(params)).then(res => {
+            axios.post(url, params, contentType).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);

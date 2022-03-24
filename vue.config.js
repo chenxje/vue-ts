@@ -38,10 +38,10 @@ module.exports = {
 
         if (isProd) {
             config.plugin('compressionPlugin')
-                .use(new CompressionPlugin({                       
+                .use(new CompressionPlugin({
                     algorithm: 'gzip',
                     test: /\.js$|\.html$|\.css$|\.less$|\.jpg$|\.jpeg$|\.png/,
-                    // test: productionGzipExtensions,                       
+                    // test: productionGzipExtensions,
                     threshold: 10240,
                     minRatio: 0.8,
                     deleteOriginalAssets: false
@@ -88,16 +88,16 @@ module.exports = {
     },
     // webpack-dev-server 相关配置
     devServer: {
-        port: 8088,
+        port: 80,
         open: false,
         disableHostCheck: true,
         // http 代理配置
         proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:3000/api',
+            '/vue-study': {
+                target: 'http://127.0.0.1:8088/vue-study',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api': ''
+                    '^/vue-study': ''
                 }
             },
             '/cityjson': {
